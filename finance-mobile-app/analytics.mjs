@@ -1,0 +1,18 @@
+// Reusable reports. Input money amounts are user currency units; output amounts are integer minor units.
+import {classify} from './taxonomy.mjs';
+import {MONTHS,toPaise,monthly,effectiveTransactions} from './engine.mjs';
+export const included = r => !r.scheduled || r.paid;
+export const activeRows = (s,year,month=null)=>effectiveTransactions(s,year).filter(r=>included(r)&&(month==null||Number(r.date.slice(5,7))===month));
+export function grouped(rows,key,{excludeIncome=false}={}){
+ const out=new Map();for(const r of rows){if(r.type==='Transfer'||(excludeIncome&&r.type==='Income'))continue;const k=String(r[key]||('Unassigned '+key));out.set(k,(out.get(k)||0)+toPaise(r.amount));}
+ return [...out].map(([name,value])=>({name,value})).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));
+}
+export function spendingByPerson(s,year,month=null){return grouped(activeRows(s,year,month).filter(r=>!['Income','Transfer'].includes(r.type)),'spender');}
+export function spendingByCategory(s,year,month=null){return grouped(activeRows(s,year,month).filter(r=>!['Income','Transfer'].includes(r.type)),'category');}
+export function categoryBudgets(s,year,month){const key=`${year}-${String(month).padStart(2,'0')}`;const actual=spendingByCategory(s,year,month);const actualMap=Object.fromEntries(actual.map(o=>[o.name,o.value]));const budgets=(s.categoryBudgets||[]).filter(x=>x.month===key);const names=new Set([...budgets.map(x=>x.category),...Object.keys(actualMap)]);return [...names].map(name=>{let planned=budgets.filter(b=>b.category===name).reduce((v,b)=>v+toPaise(b.amount),0),spent=actualMap[name]||0;return {name,planned,spent,variance:planned-spent}}).sort((a,b)=>b.spent-a.spent);}
+export function annualCashflow(s,year){return monthly(s,year).map(m=>({...m,net:m.Income-m.outflow,rate:m.Income?m.Savings/m.Income*100:0}));}
+export function monthlyWorth(s,year){return MONTHS.map((name,i)=>{let key=`${year}-${String(i+1).padStart(2,'0')}`;const matches=(s.netWorthSnapshots||[]).filter(r=>r.month===key);let assets=matches.reduce((x,r)=>x+toPaise(r.assets),0),liabilities=matches.reduce((x,r)=>x+toPaise(r.liabilities),0);return {name,month:key,assets,liabilities,net:assets-liabilities,recorded:matches.length>0}});}
+export function paycheckSummary(s,year,month){const key=`${year}-${String(month).padStart(2,'0')}`;const rows=(s.paychecks||[]).filter(p=>p.date?.startsWith(key));return rows.map(p=>{const allocated=(p.allocations||[]).reduce((x,a)=>x+toPaise(a.amount),0);const received=toPaise(p.amount);return {...p,received,allocated,remaining:received-allocated};});}
+export function allocationLimits(s,year,month){const key=`${year}-${String(month).padStart(2,'0')}`;const x=s.allocationTargets?.[key];return x&&['Need','Want','Savings'].every(k=>Number.isFinite(Number(x[k]))&&Number(x[k])>=0&&Number(x[k])<=100)&&Math.abs(Number(x.Need)+Number(x.Want)+Number(x.Savings)-100)<0.001?{Need:Number(x.Need),Want:Number(x.Want),Savings:Number(x.Savings)}:{Need:50,Want:30,Savings:20};}
+export function fiftyThirtyTwenty(s,year,month){const limits=allocationLimits(s,year,month);const rows=activeRows(s,year,month);const income=rows.filter(r=>r.type==='Income').reduce((a,r)=>a+toPaise(r.amount),0);const groups={Need:0,Want:0,Savings:0,Unassigned:0};for(const original of rows){const r=classify(original,s);if(['Income','Transfer'].includes(r.type))continue;let group=['Need','Want','Savings'].includes(r.distribution)?r.distribution:'Unassigned';groups[group]+=toPaise(r.amount)}return {income,groups,limits,targets:{Need:income*limits.Need/100,Want:income*limits.Want/100,Savings:income*limits.Savings/100}};}
+export function monthlySeries(s,year,key){return annualCashflow(s,year).map(m=>({name:m.name,value:m[key]||0}));}
