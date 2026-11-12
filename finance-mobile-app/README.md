@@ -300,3 +300,19 @@ The **public deployment ZIP contains no user's financial data**. The separate PR
 - Both use the same reporting period and transaction rows; they exclude income and account-to-account transfers, and include recorded savings allocations as outflows.
 - No changes to existing transaction data formats, storage keys, migration records, Netlify service or sync protocol.
 - The separate PRIVATE preview includes real financial records and must never be deployed publicly.
+
+
+## V14 behavior
+- Classification is optional and deliberately blank values stay blank even when the subcategory has a default Need/Want/Savings mapping. The 50/30/20 report exposes them in a separate Unassigned line.
+- Overview shows current liquid balance as cash/bank balances less outstanding card dues. It is not net worth; existing liabilities and investments remain in Wealth.
+- Activity: By category (existing drill-down) and By date (completed Bills, Expenses, Subscriptions and Debts, grouped by date, each row editable).
+- 'Paid from' is optional for expenses and transfers. Transactions without a source still contribute to appropriate reports, but they do not deduct any tracked account. Transfers without a source must have a destination. No-argument transfers are rejected. The destination is credited when set.
+- Existing cloud synchronization and transaction IDs are preserved. The production local storage key is unchanged.
+
+
+## V14 behavior
+- Classification is optional and deliberately blank values stay blank even when the subcategory has a default Need/Want/Savings mapping. The 50/30/20 report exposes them in a separate Unassigned line.
+- Overview shows current liquid balance as cash/bank balances less outstanding card dues. It is not net worth; existing liabilities and investments remain in Wealth.
+- Activity: By category (existing drill-down) and By date (completed Bills, Expenses, Subscriptions and Debts, grouped by date, each row editable).
+- 'Paid from' is optional for expenses and transfers. Transactions without a source still contribute to appropriate reports, but they do not deduct any tracked account. Transfers without a source must have a destination. No-argument transfers are rejected. The destination is credited when set.
+- Existing cloud synchronization and transaction IDs are preserved. The production local storage key is unchanged.

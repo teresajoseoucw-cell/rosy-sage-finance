@@ -11,6 +11,6 @@ test('every raw collection plus JSON included and zipped as readable valid archi
  const s={transactions:[{id:'t1',date:'2026-11-07',amount:123.45,note:'Coffee'}],noSpendTargets:{'2026-11':12},currency:'INR',year:2026};
  const files=backupFiles(s,'2026-11-07T00:00:00Z');
  assert.ok(files['transactions.csv'].includes('Coffee'));assert.ok(files['noSpendTargets.csv'].includes('2026-11'));assert.deepEqual(JSON.parse(files['full-backup.json']).transactions,s.transactions);
- const tmp='/mnt/data/finance-mobile-app/tests/.test-export.zip'; const zip=makeZip(files);assert.ok(zip.size>100);
+ const tmp=new URL('./.test-export.zip',import.meta.url).pathname; const zip=makeZip(files);assert.ok(zip.size>100);
  return zip.arrayBuffer().then(buf=>{writeFileSync(tmp,Buffer.from(buf));try{const check=execFileSync('unzip',['-t',tmp],{encoding:'utf8'});assert.match(check,/No errors detected/);}finally{unlinkSync(tmp)}});
 });
