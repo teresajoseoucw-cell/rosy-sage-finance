@@ -1,5 +1,5 @@
 // Deterministic, append-only synchronization operations. Browser and Node compatible.
-const LISTS=['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','categoryBudgets','paychecks','netWorthSnapshots','taxonomy'];
+const LISTS=['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','portfolioHoldings','portfolioTrades','portfolioSips','portfolioSnapshots','categoryBudgets','paychecks','netWorthSnapshots','taxonomy'];
 const WHOLE=['skipped','categories','spenders'];
 const MAPS=['allocationTargets','noSpendTargets'];
 const SETTINGS=['currency','year','debtStrategy','extraDebt','migration'];

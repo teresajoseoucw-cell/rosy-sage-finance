@@ -1,0 +1,2 @@
+symbol,isin,trade_date,exchange,segment,trade_type,quantity,price,trade_id,order_id
+EXAMPLE,INE123EXAMPLE,2026-11-05,NSE,EQ,BUY,2,1400,T100,O100

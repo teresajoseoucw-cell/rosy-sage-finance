@@ -1,0 +1,3 @@
+owner,asset_type,investment_name,symbol,isin,platform,opening_as_of,opening_units,opening_cost_inr,latest_price_or_nav,price_as_of
+Cherry,Stock,Example Equity,EXAMPLE,INE123EXAMPLE,Zerodha,2026-10-31,10,12500,1350,2026-10-31
+Chinju,Mutual Fund,Example Index Fund,FUNDX,INF123EXAMPLE,Coin,2026-10-31,125.500000,25000,215.2,2026-10-31

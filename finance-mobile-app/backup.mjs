@@ -1,5 +1,5 @@
 // Portable, dependency-free CSV export and ZIP packaging. No network calls.
-export const DATASETS=['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','skipped','noSpendTargets','categories','taxonomy','spenders','categoryBudgets','paychecks','netWorthSnapshots','allocationTargets'];
+export const DATASETS=['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','portfolioHoldings','portfolioTrades','portfolioSips','portfolioSnapshots','skipped','noSpendTargets','categories','taxonomy','spenders','categoryBudgets','paychecks','netWorthSnapshots','allocationTargets'];
 const encoder=new TextEncoder();
 export function csvEscape(value){
   const text=value==null?'':typeof value==='object'?JSON.stringify(value):String(value);

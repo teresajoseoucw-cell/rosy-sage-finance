@@ -1,20 +1,36 @@
-# Rosy Sage Finance V11 — Google Sheets two-phone sync
+# Rosy Sage Finance — simplified V15 investment dashboard
 
-Read **DEPLOYMENT-GUIDE.md** first.
+An in-place upgrade based on V15.2 with V14 finance features and existing Google Sheets synchronization preserved.
 
-Project structure:
-- `finance-mobile-app/` — mobile PWA (same original financial UI, reports, ledger, backups, local-first storage)
-- `finance-mobile-app/sync-core.mjs` — deterministic record-level operations
-- `finance-mobile-app/sync-client.mjs` — offline queue, periodic sync and cloud reload
-- `netlify/functions/sync.mjs` — authenticated Google Sheets API server endpoint
-- `netlify.toml` — Netlify frontend and function deployment configuration
+## Overview
+- Three owner filters: Combined, Cherry, Chinju.
+- Total current portfolio value, Stocks, Mutual Funds, value-history chart, asset allocation.
+- Owner-scoped Zerodha Console tradebook CSV import (equity and mutual fund buys/sells; preview and duplicate detection).
+- Month-end valuation CSV import, reconciliation against tradebook quantities, and dated snapshots for chart.
+- Existing holdings and detailed transactions remain available via Holdings and Monthly Imports tabs; SIP and return complexity is not shown in the main portfolio UI.
 
-**Do not upload the app's private finance JSON or Google service-account credential files.**
+## Getting started
+1. BACK UP the existing app on **both** phones (JSON export) and confirm cloud synchronization.
+2. Upgrade the **existing** GitHub repository and Netlify project. Do not create a new site or reinitialize the sheet.
+3. Update both phones before editing portfolio records.
+4. Under Invest → Cherry / Chinju → Holdings, add all opening holdings with symbol or ISIN and price; record historical opening BUY transactions with units and original cost, leaving bank-account link blank. Opening BUY must represent opening holdings before the earliest imported tradebook period. Do not duplicate earlier trades in imported tradebooks.
+5. Each month, select the owner, click **1 · Import Zerodha tradebook**, review new trades and duplicates, and confirm only if all errors are resolved.
+6. Download the **Valuation template** for that owner, fill `as_of`, `units`, `price`, `market_value` from the month-end holdings export, and select **2 · Import holdings valuation**. Confirm only when there are no mismatched units or missing holdings.
+7. Repeat for the other owner **using the same valuation date**. Combined history shows dates only when both snapshots exist.
 
-The original app documentation, financial calculation conventions and limitations remain in `finance-mobile-app/README.md`. This project requires Netlify Functions and cannot be deployed correctly as a static-only folder.
+## Precise limitations
+- Zerodha Console tradebook headers supported: `symbol`, `isin`, `trade_date`, `trade_type`, `quantity`, `price`, `trade_id`, `order_id`; alternate display names supported. It does not accept XLSX. Fund exports with different columns will need mapping after a real sample is provided.
+- The tradebook does **not** provide current valuations for untouched holdings. The valuation template is required every month. A tradebook import alone does not refresh current prices.
+- Unsupported F&O/derivatives and unmapped securities are rejected; no instruments are created silently.
+- Zerodha tradebook amounts exclude transaction fees in this simplified workflow; gross cash flows are kept unlinked from bank accounts by default.
+- Opening holdings require a verified opening BUY cost basis and unit count. An initial holdings statement alone cannot reconstruct trade history.
+- Corporate actions and transfers require explicit adjustments before quantity reconciliation can pass. An illustrative or older snapshot is never called live.
+- CSV statements may contain sensitive information. Import locally into the app; never commit them to public repository.
 
-V12: explicit transaction edit controls, faster incremental polling, cache/formatter optimizations. See finance-mobile-app/README.md.
+## Testing
+`cd finance-mobile-app && node --test tests/*.test.mjs`
 
-V12: explicit transaction edit controls, faster incremental polling, cache/formatter optimizations. See finance-mobile-app/README.md.
+The sample preview is for UI inspection, not a substitute for validating the release on real iPhones and Google Sheets.
 
-V13: side-by-side interactive category and subcategory spending charts; private real-data preview generated separately.
+## Cherry opening-portfolio patch (13 November 2026)
+The application now supports a one-time **Import opening portfolio CSV** control for Cherry or Chinju. Financial account balances are not affected. **The private Cherry CSV is intentionally excluded from this deployment ZIP:** distribute it separately to the phone through Files. See `CHERRY-OPENING-IMPORT-GUIDE.md`.

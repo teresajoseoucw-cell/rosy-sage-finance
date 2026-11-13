@@ -1,3 +1,4 @@
+import {portfolioSummary,dateHistory} from './portfolio-v15.mjs';
 // Pure, deterministic finance functions. Money is stored in integer paise.
 export const TYPES=['Income','Bills','Expenses','Savings','Subscriptions','Debts'];
 export const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -54,4 +55,4 @@ export function investmentsProjection(items,years=10){
  }
  return series;
 }
-export function netWorth(state,year){const accounts=accountBalances(state,year).reduce((s,a)=>s+(a.type==='Card'?-a.balance:a.balance),0);let otherAssets=(state.assets||[]).reduce((s,a)=>s+toPaise(a.amount),0);let liabilities=(state.debts||[]).reduce((s,d)=>s+toPaise(d.balance),0);const cardDue=accountBalances(state,year).filter(a=>a.type==='Card').reduce((s,a)=>s+a.balance,0);return {accounts,assets:accounts+cardDue+otherAssets,liabilities:liabilities+cardDue,net:accounts+otherAssets-liabilities};}
+export function netWorth(state,year){const accounts=accountBalances(state,year).reduce((s,a)=>s+(a.type==='Card'?-a.balance:a.balance),0);const todayYear=new Date().getFullYear();const history=dateHistory(state).filter(x=>x.date<=`${year}-12-31`);const portfolioValue=year<todayYear?(history.length?toPaise(history.at(-1).value):0):portfolioSummary(state).value;let otherAssets=(state.assets||[]).reduce((s,a)=>s+toPaise(a.amount),0)+portfolioValue;let liabilities=(state.debts||[]).reduce((s,d)=>s+toPaise(d.balance),0);const cardDue=accountBalances(state,year).filter(a=>a.type==='Card').reduce((s,a)=>s+a.balance,0);return {accounts,assets:accounts+cardDue+otherAssets,liabilities:liabilities+cardDue,net:accounts+otherAssets-liabilities};}
