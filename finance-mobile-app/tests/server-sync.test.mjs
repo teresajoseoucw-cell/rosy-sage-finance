@@ -13,3 +13,13 @@ test('backend rejects missing key without calling Google',async()=>{const old=hi
 test('backend appends and returns independent events',async()=>{const e1={id:'one',key:'item/transactions/abc',device:'phone-1',at:'2026-11-07T10:00:00Z',value:{id:'abc',amount:20}};const e2={id:'two',key:'item/transactions/def',device:'phone-2',at:'2026-11-07T10:01:00Z',value:{id:'def',amount:30}};let r=await handler(req('POST','z'.repeat(50),{events:[e1,e2]}));assert.equal(r.status,200);r=await handler(req('GET','z'.repeat(50)));let data=await r.json();assert.equal(data.events.length,2);assert.equal(data.events[1].value.amount,30);});
 test('backend supports incremental reads',async()=>{let r=await handler(req('GET','z'.repeat(50)));assert.equal((await r.json()).cursor,2);r=await handler(new Request('https://example.netlify.app/api/sync?since=1',{headers:{'x-rosy-sync-key':'z'.repeat(50)}}));let data=await r.json();assert.equal(data.events.length,1);assert.equal(data.events[0].id,'two')});
 test('backend rejects unexpected operation keys',async()=>{const r=await handler(req('POST','z'.repeat(50),{events:[{id:'invalid',key:'__proto__/evil',device:'one',at:'now',value:3}]}));assert.equal(r.status,400);assert.equal(rows.length,2);});
+
+test('backend accepts and replays V15 investment collections',async()=>{
+ const names=['portfolioHoldings','portfolioTrades','portfolioSips','portfolioSnapshots'];
+ const events=names.map((name,i)=>({id:'v15-'+i,key:'item/'+name+'/rec-'+i,device:'phone-1',at:'2026-11-13T15:00:00Z',value:{id:'rec-'+i,owner:'Cherry'}}));
+ const r=await handler(req('POST','z'.repeat(50),{events}));
+ assert.equal(r.status,200,JSON.stringify(await r.json()));
+ const get=await handler(req('GET','z'.repeat(50)));
+ const result=await get.json();
+ for(const e of events)assert.ok(result.events.some(x=>x.key===e.key),'Missing '+e.key);
+});

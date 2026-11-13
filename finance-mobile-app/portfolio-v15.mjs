@@ -63,6 +63,21 @@ export function portfolioSummary(db,asOf=new Date().toISOString().slice(0,10),ow
  const validXirr=trades.some(x=>x.kind==='BUY')&&flows.length>1?xirr(flows):null;
  return {holdings,trades,invested,value,unrealized,realized,dividends,fees,allocation,xirr:validXirr,unpriced:holdings.filter(h=>h.units>0&&!h.price).length,stale:holdings.filter(h=>h.units>0&&h.stale).length,allocationTotal:value};
 }
+// Current position breakdown: unrealized return on remaining FIFO cost basis, not a cash-flow/XIRR return.
+// Values are in paise (same units as holdingLedger). Only positive-unit holdings contribute.
+export function portfolioAssetPositions(summary){
+ const result={Stock:{value:0,cost:0,holdings:0,unpriced:0},'Mutual Fund':{value:0,cost:0,holdings:0,unpriced:0}};
+ for(const h of summary.holdings||[]){
+  if(!(h.units>1e-8)||!result[h.holding.assetType])continue;
+  const p=result[h.holding.assetType];p.holdings++;p.value+=h.value;p.cost+=h.cost;
+  if(!(Number(h.price)>0))p.unpriced++;
+ }
+ for(const p of Object.values(result)){
+  p.gain=p.value-p.cost;
+  p.returnPct=p.cost>0&&p.unpriced===0?p.gain/p.cost*100:null;
+ }
+ return result;
+}
 export function linkedCashEntry(trade,holding){
  if(!trade.bankAccountId)return null;
  const amount=trade.kind==='BUY'?round(Number(trade.amount)+Number(trade.fees||0)):trade.kind==='SELL'?round(Number(trade.amount)-Number(trade.fees||0)):round(Number(trade.amount)-Number(trade.fees||0));

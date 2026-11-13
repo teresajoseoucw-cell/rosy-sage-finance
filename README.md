@@ -34,3 +34,13 @@ The sample preview is for UI inspection, not a substitute for validating the rel
 
 ## Cherry opening-portfolio patch (13 November 2026)
 The application now supports a one-time **Import opening portfolio CSV** control for Cherry or Chinju. Financial account balances are not affected. **The private Cherry CSV is intentionally excluded from this deployment ZIP:** distribute it separately to the phone through Files. See `CHERRY-OPENING-IMPORT-GUIDE.md`.
+
+## Touch-enabled Investments chart
+
+The white Investments dashboard now supports touching or dragging across recorded snapshot dates, with a readout of exact date, value and difference from the previous snapshot. The selector and 1M/6M/1Y/ALL filters remain unchanged. The graph supports keyboard arrows, Home and End when focused. A single opening snapshot is displayed as a point, not a fabricated trend. No changes to investment data or Google Sheets record schemas were required.
+
+To deploy, update the existing repository, including `finance-mobile-app/app.mjs`, `style.css`, `index.html`, and `sw.js`. The preexisting Netlify function fix is retained. Preserve backups and queued sync events.
+
+
+## Investments dashboard: equity and mutual funds returns
+The white dashboard now includes Equity & ETFs and Mutual Funds cards, each showing position value, invested/remaining FIFO cost, unrealized gain/loss, return percentage and number of holdings. Percentage = (position value - remaining cost)/remaining cost x 100. Realized gains/dividends are excluded; missing prices show incomplete valuation. Chart touch interactions retained.
