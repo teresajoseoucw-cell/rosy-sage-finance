@@ -2,7 +2,7 @@ import {createSign,timingSafeEqual} from 'node:crypto';
 const reply=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff'}});
 const equal=(a,b)=>{const x=Buffer.from(a||''),y=Buffer.from(b||'');return x.length===y.length&&timingSafeEqual(x,y)};
 const encode=x=>Buffer.from(JSON.stringify(x)).toString('base64url');
-const COLLECTIONS=new Set(['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','categoryBudgets','paychecks','netWorthSnapshots','taxonomy']);
+const COLLECTIONS=new Set(['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','portfolioHoldings','portfolioTrades','portfolioSips','portfolioSnapshots','categoryBudgets','paychecks','netWorthSnapshots','taxonomy']);
 const WHOLE=new Set(['skipped','categories','spenders']);const MAPS=new Set(['allocationTargets','noSpendTargets']);const SETTINGS=new Set(['currency','year','debtStrategy','extraDebt','migration']);
 function validKey(key){if(key==='__bootstrap')return true;if(typeof key!=='string'||key.length>250)return false;const p=key.split('/');if(p[0]==='item'&&p.length===3)return COLLECTIONS.has(p[1])&&p[2].length>0;if(p[0]==='whole'&&p.length===2)return WHOLE.has(p[1]);if(p[0]==='map'&&p.length===3)return MAPS.has(p[1])&&p[2].length>0;if(p[0]==='setting'&&p.length===2)return SETTINGS.has(p[1]);return false;}
 let cachedToken='',expires=0;
