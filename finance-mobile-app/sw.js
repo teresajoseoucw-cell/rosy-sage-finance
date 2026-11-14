@@ -1,4 +1,4 @@
-const CACHE='rosy-sage-finance-v20-household-sms';
+const CACHE='rosy-sage-finance-v21-wealth-import-repair';
 const SHELL=['./','./index.html','./style.css','./theme.js','./privacy.js','./app.mjs','./engine.mjs','./backup.mjs','./analytics.mjs','./activity.mjs','./views-v14.mjs','./taxonomy.mjs','./accounts.mjs','./ledger.mjs','./sync-client.mjs','./sync-core.mjs','./portfolio-v15.mjs','./sms-v16.mjs','./icon.svg','./manifest.webmanifest'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()]));});
