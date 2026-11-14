@@ -199,3 +199,69 @@
 .p-compare-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;font-size:12px}
 .p-compare-detail-grid span{color:#70877b}.p-compare-detail-grid strong{text-align:right;font-variant-numeric:tabular-nums}
 @media(max-width:740px){.p-compare-grid{grid-template-columns:1fr;gap:12px}.p-compare-panel{padding:15px 12px}.p-compare-row{padding:9px 6px}.p-compare-toolbar{justify-content:space-between}.p-compare-toolbar select{max-width:155px}}
+
+/* V15.3: full-app appearance options. Default remains the previous light mode. */
+.appearance-button{font-size:22px;line-height:1;flex-shrink:0}
+:root[data-theme="dark"]{color-scheme:dark;--pie-hole:#202d27;color:#e7efe9;background:#141d1a}
+:root[data-theme="dark"] body{background:#141d1a;color:#e7efe9}
+:root[data-theme="dark"] .topbar,:root[data-theme="dark"] .bottom-nav{background:#19251f;border-color:#34463b;box-shadow:0 -2px 20px #0003}
+:root[data-theme="dark"] .logo small,:root[data-theme="dark"] .subtitle,:root[data-theme="dark"] .muted,:root[data-theme="dark"] .hint,:root[data-theme="dark"] .item-sub,:root[data-theme="dark"] .legend,:root[data-theme="dark"] .eyebrow,:root[data-theme="dark"] .kpi .label,:root[data-theme="dark"] .kpi .note{color:#afc4b6}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .item,:root[data-theme="dark"] .health-tile,:root[data-theme="dark"] .pie-card,:root[data-theme="dark"] .p-compare-panel,:root[data-theme="dark"] .p-ref-owner-row,:root[data-theme="dark"] .p-asset-card,:root[data-theme="dark"] .p-position-select,:root[data-theme="dark"] .p-ref-asset-metric,:root[data-theme="dark"] .p-compare-detail,:root[data-theme="dark"] .p-reference-positions,:root[data-theme="dark"] .p-positions-dashboard{background:#202d27;color:#e6f0e8;border-color:#3c5143;box-shadow:none}
+:root[data-theme="dark"] .p-reference-dashboard{background:#1d2923;border-color:#415447;box-shadow:none;color:#e6f0e8}
+:root[data-theme="dark"] .hero{background:#2b5544;color:#fff}
+:root[data-theme="dark"] .top-actions select,:root[data-theme="dark"] .pill-select,:root[data-theme="dark"] .iconbtn,:root[data-theme="dark"] .action,:root[data-theme="dark"] .chip,:root[data-theme="dark"] .p-compare-toolbar select,:root[data-theme="dark"] .p-owner-nav button,:root[data-theme="dark"] .field input,:root[data-theme="dark"] .field select,:root[data-theme="dark"] .field textarea,:root[data-theme="dark"] .p-ref-periods button{background:#293a30;color:#e0eee2;border-color:#526656}
+:root[data-theme="dark"] .chip.active,:root[data-theme="dark"] .p-owner-nav button.active,:root[data-theme="dark"] .p-ref-periods button.active{background:#407b60;border-color:#6caf86;color:#fff}
+:root[data-theme="dark"] .bottom-nav button{color:#a3baa9}
+:root[data-theme="dark"] .bottom-nav button.selected,:root[data-theme="dark"] .positive,:root[data-theme="dark"] .linkbutton{color:#88d1a3}
+:root[data-theme="dark"] .negative{color:#f39c93}
+:root[data-theme="dark"] .setting-row,:root[data-theme="dark"] .data-table td,:root[data-theme="dark"] .data-table th,:root[data-theme="dark"] .p-position-item{border-color:#3d5043}
+:root[data-theme="dark"] .setting-row p,:root[data-theme="dark"] .health-note,:root[data-theme="dark"] .health-tile small,:root[data-theme="dark"] .health-target,:root[data-theme="dark"] .p-asset-card-cost span,:root[data-theme="dark"] .p-asset-card-bottom span,:root[data-theme="dark"] .p-ref-asset-metric small,:root[data-theme="dark"] .p-position-item span,:root[data-theme="dark"] .p-position-item small{color:#afc4b6}
+:root[data-theme="dark"] .circle,:root[data-theme="dark"] .tag,:root[data-theme="dark"] .category-readonly,:root[data-theme="dark"] .empty,:root[data-theme="dark"] .notice,:root[data-theme="dark"] .progress,:root[data-theme="dark"] .health-meter,:root[data-theme="dark"] .p-ref-allocation,:root[data-theme="dark"] .p-alloc-bar,:root[data-theme="dark"] .p-ref-chart-empty{background:#2b3b30;border-color:#4c604f;color:#d2e1d4}
+:root[data-theme="dark"] .notice{color:#e4d09b}
+:root[data-theme="dark"] dialog{background:#202d27;color:#e6f0e8}
+:root[data-theme="dark"] dialog::backdrop{background:#050d0ac4}
+:root[data-theme="dark"] .field>span,:root[data-theme="dark"] .data-table th,:root[data-theme="dark"] .p-ref-brand,:root[data-theme="dark"] .p-ref-kicker,:root[data-theme="dark"] .p-ref-metrics span,:root[data-theme="dark"] .p-chart-readout span,:root[data-theme="dark"] .p-compare-panel>p,:root[data-theme="dark"] .p-ref-alloc-legend,:root[data-theme="dark"] .p-ref-footnote{color:#afc6b5}
+:root[data-theme="dark"] .p-ref-heading h2,:root[data-theme="dark"] .p-ref-icon,:root[data-theme="dark"] .p-ref-total,:root[data-theme="dark"] .p-ref-metrics strong,:root[data-theme="dark"] .p-ref-chart-head h3,:root[data-theme="dark"] .p-ref-alloc-title,:root[data-theme="dark"] .p-ref-keymetrics strong,:root[data-theme="dark"] .p-ref-asset-metric>strong,:root[data-theme="dark"] .p-asset-card-value,:root[data-theme="dark"] .p-asset-card-cost strong,:root[data-theme="dark"] .p-asset-card-bottom strong,:root[data-theme="dark"] .p-chart-readout strong,:root[data-theme="dark"] .p-compare-panel h4{color:#e7f2e9}
+:root[data-theme="dark"] .p-ref-asset-metric.active,:root[data-theme="dark"] .p-position-select.active,:root[data-theme="dark"] .p-ref-owner-row.active,:root[data-theme="dark"] .p-ref-asset-card.active,:root[data-theme="dark"] .p-compare-row.selected{background:#2d4938;border-color:#72b88a}
+:root[data-theme="dark"] .p-ref-divider,:root[data-theme="dark"] .p-compare-row,:root[data-theme="dark"] .p-compare-detail{border-color:#42584a}
+:root[data-theme="dark"] .p-compare-row{color:#dceadd}
+:root[data-theme="dark"] .p-compare-detail{background:#253b2e}
+:root[data-theme="dark"] .p-compare-detail>p,:root[data-theme="dark"] .p-compare-detail-grid span,:root[data-theme="dark"] .p-ref-small-title,:root[data-theme="dark"] .p-asset-card-label,:root[data-theme="dark"] .p-position-card-top,:root[data-theme="dark"] .p-ref-keymetrics span{color:#b0cbb9}
+:root[data-theme="dark"] .p-compare-value-track,:root[data-theme="dark"] .p-compare-return-track{background:#354639}
+:root[data-theme="dark"] .p-compare-zero{background:#9aafa0}
+:root[data-theme="dark"] .chart text{fill:#a9c0b1}
+:root[data-theme="dark"] .chart .gridline{stroke:#465b4c}
+:root[data-theme="dark"] .p-reference-dashboard .p-profit,:root[data-theme="dark"] .p-reference-positions .p-profit,:root[data-theme="dark"] .p-asset-card .p-profit{color:#89d1a3!important}
+:root[data-theme="dark"] .p-reference-dashboard .p-loss,:root[data-theme="dark"] .p-reference-positions .p-loss,:root[data-theme="dark"] .p-asset-card .p-loss{color:#f69b94!important}
+:root[data-theme="dark"] .pie-detail,:root[data-theme="dark"] .pie-center-label,:root[data-theme="dark"] .pie-center-number{color:#dce9df;fill:#dce9df}
+:root[data-theme="dark"] .p-chart-hint,:root[data-theme="dark"] .p-ref-chart .p-chart-label{color:#adc5b3}
+:root[data-theme="dark"] .primary{background:#4e9a70;color:#fff}
+:root[data-theme="dark"] .secondary{background:#563c38;color:#ffd1c9}
+:root[data-theme="dark"] .brand-mark{background:#355b47;color:#d8f1df}
+:root[data-theme="dark"] .p-ref-status{background:#2e4835;color:#9be1a6}
+:root[data-theme="dark"] .p-ref-gain,:root[data-theme="dark"] .p-ref-positive{color:#8bd89b}
+@media(max-width:420px){.appearance-button{min-width:34px;width:34px;height:38px}.top-actions{gap:5px}}
+/* Keep the theme control comfortably inside narrow iPhone headers. */
+@media(max-width:440px){
+ .topbar{padding:12px 10px;gap:5px}
+ .logo{gap:6px;min-width:0}
+ .brand-mark{width:30px;height:32px;font-size:21px;flex-shrink:0}
+ .logo b{font-size:16px;white-space:nowrap}
+ .logo small{font-size:7px;letter-spacing:1.4px;white-space:nowrap}
+ .top-actions{gap:4px;flex-shrink:0}
+ .sync-indicator{max-width:65px;font-size:8px;padding:5px 3px}
+ .top-actions select{font-size:12px;padding:8px 5px;min-width:52px}
+ .top-actions .iconbtn{min-width:32px;width:32px;height:35px;border-radius:8px}
+}
+:root[data-theme="dark"] .sync-indicator{background:#253e30;color:#c3e5cb;border-color:#49624f}
+:root[data-theme="dark"] .p-ref-asset-metric>small,:root[data-theme="dark"] .p-ref-asset-return span,:root[data-theme="dark"] .p-ref-asset-grid small{color:#b4c9b9}
+:root[data-theme="dark"] .p-ref-owner-row strong,:root[data-theme="dark"] .p-ref-asset-metric .p-ref-asset-return,:root[data-theme="dark"] .p-position-select strong{color:#e6f0e8}
+/* V15 privacy curtain: visual masking only, never mutates financial data. */
+.privacy-button{font-size:22px;line-height:1;flex-shrink:0}
+.rs-privacy-mask{display:inline-block!important;vertical-align:baseline;font-size:0!important;white-space:nowrap!important;line-height:1.2!important;user-select:none!important;-webkit-user-select:none!important;pointer-events:none!important;color:transparent!important;min-width:32px}
+.rs-privacy-mask::after{content:'••••';font-size:12px;letter-spacing:1px;color:#8e9b95!important;display:inline-block}
+:root[data-theme="dark"] .rs-privacy-mask::after{color:#c5d4c9!important}
+:root.privacy-hidden .chart svg,:root.privacy-hidden svg.chart,:root.privacy-hidden canvas,:root.privacy-hidden .p-ref-chart svg,:root.privacy-hidden .p-reference-dashboard .p-ref-chart svg{visibility:hidden!important}
+:root.privacy-hidden .p-compare-value-track>span,:root.privacy-hidden .p-compare-positive i,:root.privacy-hidden .p-compare-negative i,:root.privacy-hidden .p-ref-allocation>span,:root.privacy-hidden .p-alloc-bar>span,:root.privacy-hidden .signed-fill,:root.privacy-hidden .progress>span,:root.privacy-hidden .health-meter>span{opacity:0!important}
+:root.privacy-hidden #editor input[type="number"],:root.privacy-hidden #portfolioDialog input[type="number"],:root.privacy-hidden #allocationEditor input[type="number"],:root.privacy-hidden .field input[type="number"]{filter:blur(8px)}
+@media(max-width:440px){.top-actions .privacy-button{min-width:30px;width:30px;height:35px;font-size:20px}.top-actions .appearance-button{min-width:30px;width:30px}}

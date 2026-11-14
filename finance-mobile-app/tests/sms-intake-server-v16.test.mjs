@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {generateKeyPairSync} from 'node:crypto';
+import handler from '../../netlify/functions/sms-intake.mjs';
+const {privateKey}=generateKeyPairSync('rsa',{modulusLength:2048});
+process.env.GOOGLE_SERVICE_ACCOUNT_JSON_BASE64=Buffer.from(JSON.stringify({client_email:'test@example.com',private_key:privateKey.export({type:'pkcs8',format:'pem'})})).toString('base64');
+process.env.GOOGLE_SPREADSHEET_ID='test-sheet';process.env.ROSY_SMS_INGEST_KEY='x'.repeat(48);
+const savedFetch=globalThis.fetch;let rows=[];
+globalThis.fetch=async(url,opts={})=>{url=String(url);if(url.includes('oauth2.googleapis.com'))return Response.json({access_token:'testtoken',expires_in:3600});if(url.includes(':append')){const data=JSON.parse(opts.body);rows.push(...data.values);return Response.json({updates:{updatedRows:data.values.length}})}if(url.includes('sheets.googleapis.com'))return Response.json({values:rows});throw Error('Unexpected fetch '+url)};
+const req=(key,body)=>new Request('https://example.test/api/sms-intake',{method:'POST',headers:{'x-rosy-sms-key':key,'content-type':'application/json'},body:JSON.stringify(body)});
+test('SMS endpoint forbids unauthorized requests',async()=>{const r=await handler(req('bad',{sender:'BANK',text:'INR 50 debited'}));assert.equal(r.status,401);assert.equal(rows.length,0)});
+test('SMS endpoint accepts suggestion once, rejects identical retry',async()=>{let body={sender:'BANK',text:'INR 500 debited from account xx1234 UTR 123456789',receivedAt:'2026-11-14T10:00:00Z'};let r=await handler(req('x'.repeat(48),body));assert.equal(r.status,202,await r.text());assert.equal(rows.length,1);assert.match(rows[0][3],/^item\/smsInbox\//);r=await handler(req('x'.repeat(48),body));assert.equal(r.status,200);assert.equal((await r.json()).duplicate,true);assert.equal(rows.length,1)});
+test('SMS endpoint rejects an OTP',async()=>{let r=await handler(req('x'.repeat(48),{sender:'BANK',text:'OTP 123456 valid for INR 50'}));assert.equal(r.status,422);assert.equal(rows.length,1)});

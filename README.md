@@ -44,3 +44,7 @@ To deploy, update the existing repository, including `finance-mobile-app/app.mjs
 
 ## Investments dashboard: equity and mutual funds returns
 The white dashboard now includes Equity & ETFs and Mutual Funds cards, each showing position value, invested/remaining FIFO cost, unrealized gain/loss, return percentage and number of holdings. Percentage = (position value - remaining cost)/remaining cost x 100. Realized gains/dividends are excluded; missing prices show incomplete valuation. Chart touch interactions retained.
+
+
+## Value visibility (privacy curtain)
+Tap the eye/privacy button in the top header or choose **Plan → Settings → Display financial values**. This device-only preference visually masks currency amounts, percentages, chart graphics, and numeric edit fields. It does not modify stored financial records, portfolio holdings, or sync queue. It is for casual screen privacy, not encryption or protection from browser inspection, exports, screenshots taken while values are visible, or anyone with access to your unlocked device.

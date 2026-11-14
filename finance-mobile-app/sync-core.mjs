@@ -1,5 +1,5 @@
 // Deterministic, append-only synchronization operations. Browser and Node compatible.
-const LISTS=['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','portfolioHoldings','portfolioTrades','portfolioSips','portfolioSnapshots','categoryBudgets','paychecks','netWorthSnapshots','taxonomy'];
+const LISTS=['transactions','recurring','accounts','budgets','funds','contributions','debts','assets','investments','portfolioHoldings','portfolioTrades','portfolioSips','portfolioSnapshots','wealthItems','wealthSnapshots','smsInbox','categoryBudgets','paychecks','netWorthSnapshots','taxonomy'];
 const WHOLE=['skipped','categories','spenders'];
 const MAPS=['allocationTargets','noSpendTargets'];
 const SETTINGS=['currency','year','debtStrategy','extraDebt','migration'];
@@ -22,7 +22,7 @@ export function diffState(oldState,newState,makeId=()=>crypto.randomUUID()){
 export function applyOp(state,op){
  if(op.key==='__bootstrap')return clone(op.value);
  const parts=op.key.split('/');const kind=parts[0],name=parts[1];
- if(kind==='item'&&LISTS.includes(name)&&parts.length===3){const id=decodeURIComponent(parts[2]);const a=Array.isArray(state[name])?state[name].slice():[];const at=a.findIndex(x=>x?.id===id);if(op.deleted){if(at>=0)a.splice(at,1)}else if(at>=0)a[at]=clone(op.value);else a.push(clone(op.value));state[name]=a;}
+ if(kind==='item'&&LISTS.includes(name)&&parts.length===3){const id=decodeURIComponent(parts[2]);const a=Array.isArray(state[name])?state[name].slice():[];const at=a.findIndex(x=>x?.id===id);if(op.deleted){if(at>=0)a.splice(at,1)}else if(at>=0){const incoming=clone(op.value);a[at]=(name==='smsInbox'&&['approved','dismissed'].includes(a[at]?.status)&&incoming?.status==='pending')?a[at]:incoming;}else a.push(clone(op.value));state[name]=a;}
  else if(kind==='whole'&&WHOLE.includes(name)&&parts.length===2){state[name]=clone(op.value);}
  else if(kind==='map'&&MAPS.includes(name)&&parts.length===3){const key=decodeURIComponent(parts[2]);if(key==='__proto__'||key==='constructor'||key==='prototype')throw Error('Invalid sync key');const m={...(state[name]||{})};if(op.deleted)delete m[key];else m[key]=clone(op.value);state[name]=m;}
  else if(kind==='setting'&&SETTINGS.includes(name)&&parts.length===2){state[name]=clone(op.value);}
