@@ -4,7 +4,7 @@
   const KEY='rosy-sage-appearance-v1';
   const media=window.matchMedia?.('(prefers-color-scheme: dark)');
   const valid=new Set(['light','dark','system']);
-  function preference(){try{const p=localStorage.getItem(KEY);return valid.has(p)?p:'light';}catch{return 'light';}}
+  function preference(){try{const p=localStorage.getItem(KEY);return valid.has(p)?p:'dark';}catch{return 'dark';}}
   function resolved(pref){return pref==='system'?(media?.matches?'dark':'light'):pref;}
   function apply(){
     const pref=preference(),effective=resolved(pref);
